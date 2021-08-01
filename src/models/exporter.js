@@ -48,8 +48,7 @@ const exporterSchema = new mongoose.Schema({
     directorate: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Directorate',
-        required: true,
-
+        required: true
     },
     taxRegistration: {
         type: String,

@@ -30,7 +30,7 @@ router.get('/exporters', async (req, res) => {
 
 router.patch('/exporters/:id', async (req, res) => {
     const updates = Object.keys(req.body)
-    const allowedUpdates = ['name', 'email', 'city', 'phone', 'address', 'companyName', 'status', 'category', 'product', 'authorized']
+    const allowedUpdates = ['name', 'email', 'city', 'phone', 'address', 'companyName', 'status', 'category', 'product']
     const isValidOperation = updates.every((update) => allowedUpdates.includes(update))
     
     if (!isValidOperation) {
