@@ -2,8 +2,10 @@ const express = require('express')
 const router = new express.Router()
 const Export = require('../models/export')
 const Exporter = require('../models/exporter')
+const auth = require('../middleware/auth')
+const mongoose = require('mongoose')
 
-router.post('/exports', async (req, res) => {
+router.post('/exports', auth, async (req, res) => {
     const exporterInfoId = await Exporter.findOne({ exporterNumber: req.body.exporterNumber })
     let exports = new Export(req.body)
 
@@ -18,7 +20,7 @@ router.post('/exports', async (req, res) => {
     }
 })
 
-router.get('/exports', async (req, res) => {
+router.get('/exports', auth, async (req, res) => {
     try {
         const exports = await Export.find({})
        
@@ -34,12 +36,15 @@ router.get('/exports', async (req, res) => {
     }
 })
 
-router.get('/exports/:id', async (req, res) => {
+router.get('/exports/:id', auth, async (req, res) => {
+    if (mongoose.Types.ObjectId.isValid(req.params.id) == false) {
+        return res.status(400).send()
+    }
     try{
         const exports = await Export.findById(req.params.id)
         await exports.populate('directorate').execPopulate()
         await exports.populate('exporterInfo').execPopulate()
-        res.send(exports.exporterInfo)
+        res.send(exports)
 
 
     } catch (e) {

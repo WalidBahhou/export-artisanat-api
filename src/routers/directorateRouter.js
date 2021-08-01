@@ -1,9 +1,10 @@
 const express = require('express')
+const auth = require('../middleware/auth')
 const router = new express.Router()
 const Directorate = require('../models/directorate')
 
 
-router.post('/directorates', async (req, res) => {
+router.post('/directorates', auth, async (req, res) => {
     const directorate = new Directorate(req.body)
 
     try{
@@ -14,7 +15,7 @@ router.post('/directorates', async (req, res) => {
     }
 })
 
-router.get('/directorates', async (req, res) => {
+router.get('/directorates', auth, async (req, res) => {
     try{
         res.send(await Directorate.find({}))
     } catch (e) {
