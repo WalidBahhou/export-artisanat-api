@@ -6,11 +6,11 @@ const auth = require('../middleware/auth')
 const mongoose = require('mongoose')
 
 router.post('/exports', auth, async (req, res) => {
-    const exporterInfoId = await Exporter.findOne({ exporterNumber: req.body.exporterNumber })
+    const exporter = await Exporter.findOne({ exporterNumber: req.body.exporterNumber })
+    
     let exports = new Export(req.body)
 
-    exports.exporterInfo = exporterInfoId._id
-
+    exports.exporterInfo = exporter._id
 
     try{
         await exports.save(exports)
@@ -37,6 +37,7 @@ router.get('/exports', auth, async (req, res) => {
 })
 
 router.get('/exports/:id', auth, async (req, res) => {
+
     if (mongoose.Types.ObjectId.isValid(req.params.id) == false) {
         return res.status(400).send()
     }
@@ -50,6 +51,25 @@ router.get('/exports/:id', auth, async (req, res) => {
     } catch (e) {
         res.status(400).send(e)
         console.log(e)
+    }
+})
+
+router.get('/exports/exporters/:exporterId', auth, async (req, res) => {
+
+    try{
+        const exports = await Export.find({ exporterNumber: req.params.exporterId })
+
+        if (exports.length === 0) {
+            return res.status(404).send('No export operation for this exporter')
+        } else {
+            for (let index = 0; index < exports.length; index++) {
+                await exports[index].populate(['directorate', 'exporterInfo']).execPopulate()
+              }
+            res.send(exports)
+        }
+
+    } catch (e) {
+        res.status(400).send(e)
     }
 })
 

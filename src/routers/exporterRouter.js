@@ -3,7 +3,6 @@ const express = require('express')
 const auth = require('../middleware/auth')
 const authObserv = require('../middleware/authObserv')
 const router = new express.Router()
-const mongoose = require('mongoose')
 
 router.post('/exporters', auth, async (req, res) => {
     const exporter = new Exporter(req.body)
@@ -17,21 +16,27 @@ router.post('/exporters', auth, async (req, res) => {
 })
 
 router.get('/exporters', auth, async (req, res) => {
+        const exporters = await Exporter.find()
     try{
-        const exporters = await Exporter.find({})
-        let populated = []
+
+        if (exporters.length === 0) {
+            return res.status(404).send({ error: 'No exporters in the database' })
+        } else {
+            let populated = []
+        
+            for (let expo of exporters) {
+                populated.push(await expo.populate('directorate').execPopulate())
+              }
     
-        for (let expo of exporters) {
-            populated.push(await expo.populate('directorate').execPopulate())
-          }
-    
-        res.send(populated)
+            res.send(populated)
+        }
+
     } catch (e) {
-        res.status(404).send(e)
+        res.status(400).send(e)
     }
 })
 
-router.patch('/exporters/:id', auth, async (req, res) => {
+router.patch('/exporters/:exporterId', auth, async (req, res) => {
     const updates = Object.keys(req.body)
     const allowedUpdates = ['name', 'email', 'city', 'phone', 'address', 'companyName', 'status', 'category', 'product']
     const isValidOperation = updates.every((update) => allowedUpdates.includes(update))
@@ -40,12 +45,8 @@ router.patch('/exporters/:id', auth, async (req, res) => {
         return res.status(400).send({error: 'Invalid updates!'})
     }
 
-    if (mongoose.Types.ObjectId.isValid(req.params.id) == false) {
-        return res.status(400).send()
-    }
-
     try {
-        const exporter = await Exporter.findById(req.params.id)
+        const exporter = await Exporter.findOne({ exporterNumber: req.params.exporterId })
 
         updates.forEach((update) => {
             exporter[update] = req.body[update]
@@ -59,7 +60,7 @@ router.patch('/exporters/:id', auth, async (req, res) => {
     }
 })
 
-router.patch('/exporters/validate/:id', authObserv, async (req, res) => {
+router.patch('/exporters/validate/:exporterId', authObserv, async (req, res) => {
     const updates = Object.keys(req.body)
     const allowedUpdates = ['authorized']
     const isValidOperation = updates.every((update) => allowedUpdates.includes(update))
@@ -67,12 +68,9 @@ router.patch('/exporters/validate/:id', authObserv, async (req, res) => {
     if (!isValidOperation) {
         return res.status(400).send({error: 'Invalid update!'})
     }
-    
-    if (mongoose.Types.ObjectId.isValid(req.params.id) == false) {
-        return res.status(400).send()
-    }
+
     try {
-        const exporter = await Exporter.findById(req.params.id)
+        const exporter = await Exporter.findOne({ exporterNumber: req.params.exporterId })
 
         updates.forEach((update) => {
             exporter[update] = req.body[update]
@@ -86,12 +84,10 @@ router.patch('/exporters/validate/:id', authObserv, async (req, res) => {
     }
 })
 
-router.delete('/exporters/:id', auth, async (req, res) => {
-    if (mongoose.Types.ObjectId.isValid(req.params.id) == false) {
-        return res.status(400).send()
-    }
+router.delete('/exporters/:exporterId', auth, async (req, res) => {
+
     try {
-        const exporter = await Exporter.findByIdAndDelete(req.params.id)
+        const exporter = await Exporter.findOneAndDelete({ exporterNumber: req.params.exporterId })
         if (!exporter) {
             return res.status(404).send()
         }
