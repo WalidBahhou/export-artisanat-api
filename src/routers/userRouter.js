@@ -3,6 +3,7 @@ const User = require('../models/user')
 const auth = require('../middleware/auth')
 const router = new express.Router()
 
+
 router.post('/users', async (req, res) => {
     
     try{
@@ -17,10 +18,15 @@ router.post('/users', async (req, res) => {
 router.post('/users/login', async (req, res) => {
     try {
         const user = await User.findByCredentials(req.body.email, req.body.password)
+        await user.populate('directorate').execPopulate()
         const token = await user.generateAuthToken()
-        res.send({ user, token })
+        res.cookie('Authorization', `Bearer ${token}`, {
+            httpOnly: true,
+            maxAge: 2 * 60 * 60 * 1000
+        }).redirect('/home')
+        // .send({ user, token }).
     } catch (e) {
-        res.status(400).send(e.message)
+        res.status(400).redirect('/')
     }
 })
 
