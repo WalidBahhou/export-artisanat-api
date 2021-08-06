@@ -30,12 +30,12 @@ router.post('/users/login', async (req, res) => {
     }
 })
 
-router.post('/users/logout', auth, async (req, res) => {
+router.get('/users/logout', auth, async (req, res) => {
     try {
         req.user.tokens = []
-
         await req.user.save()
-        res.send()
+        res.clearCookie('Authorization')
+        res.status(200).redirect('/')
     } catch (e) {
         res.status(500).send(e)
         console.log(e)

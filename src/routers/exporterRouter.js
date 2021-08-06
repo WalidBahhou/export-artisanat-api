@@ -28,7 +28,11 @@ router.get('/exporters', auth, async (req, res) => {
                 populated.push(await expo.populate('directorate').execPopulate())
               }
     
-            res.send(populated)
+            // res.send(populated)
+            res.render('exporters', {
+                title: 'Exporters',
+                populated
+            })
         }
 
     } catch (e) {

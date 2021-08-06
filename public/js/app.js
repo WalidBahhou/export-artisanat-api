@@ -2,17 +2,13 @@
 fetch('/exports', {
     method: 'GET',
     headers: {
-        'Content-Type': 'application/json',
-        'Cookie': 'Authorization'
+        'Content-Type': 'application/json'
       }
 })
 .then((response) => {
     return response.json()
 }).then((res) => {
-    for (let index = 0; index < res.length; index++) {
-        para = res[index];
-    }
-
+    console.log(res)
 }).catch((e) => {
     console.log(e)
 })

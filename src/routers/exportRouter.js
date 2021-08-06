@@ -28,7 +28,11 @@ router.get('/exports', auth, async (req, res) => {
             await exports[index].populate(['directorate', 'exporterInfo']).execPopulate()
           }
           
-        res.send(exports)
+        // res.send(exports)
+        res.render('exports', {
+            title: 'Exports',
+            exports
+        })
 
     } catch (e) {
         res.status(400).send(e)

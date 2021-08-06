@@ -10,7 +10,7 @@ router.get('/', (req, res) => {
 })
 
 router.get('/home', auth,(req, res) => {
-    res.render('home', {
+        res.render('home', {
         title: 'Home'
     })
 })
