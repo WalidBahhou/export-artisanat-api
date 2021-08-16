@@ -16,7 +16,7 @@ const auth = async (req, res, next) => {
         req.user = user
         next()
     } catch (e) {
-        res.redirect(401, '/')
+        res.status(401).redirect('/')
     }
 }
 
