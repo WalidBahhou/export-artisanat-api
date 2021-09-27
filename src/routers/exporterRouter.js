@@ -9,7 +9,7 @@ router.post('/exporters', auth, async (req, res) => {
 
     try{
         await exporter.save()
-        res.status(201).send(exporter)
+        res.status(201)
     } catch (e) {
         res.status(400).send(e)
     }

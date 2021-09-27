@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+    <link rel="stylesheet" href="/styles/style.css">
+    {{!-- <script src="/scripts/script.js"></script> --}}
+    <title>{{title}}</title>
+</head>
+<body>
+    {{>sidebar}}
+
+    <button id="addexport" class="btn btn-outline-primary" > <a href="/addexport" >Nouveaux Exportf</a> </button>
+
+    <table id="exportt" class="table table-success table-striped">
+        <tr>
+            <th>Direction</th>
+            <th>Num Controleur</th>
+            <th>Num C.I.</th>
+            <th>Point de Sortie</th>
+            <th>Mode de Transport</th>
+            <th>Num D'Exportateur</th>
+            <th>Nom D'Exportateur</th>
+            <th>Ville d'origine</th>
+            <th>Nom Importateur</th>
+            <th>Statut</th>
+            <th>Adresse Importateur</th>
+            <th>Pays Import</th>
+            <th>Famille de produit</th>
+            <th>Description</th>
+            <th>Nbre d'Unite</th>
+            <th>Poids</th>
+            <th>Superficie</th>
+            <th>Valeurs</th>
+        </tr>
+    </table>
+
+    <script>
+        fetch('/exports')
+  .then(response => response.json())
+  .then(data => {
+    var exp = ""
+
+    data.forEach((e)=>{
+        exp += "<tr>"
+        exp += "<td>"+e.directorate+"</td>"
+        exp += "<td>"+e.inspectorNumber+"</td>"
+        exp += "<td>"+e.inspectionCertificatNumber+"</td>"
+        exp += "<td>"+e.exitPoint+"</td>"
+        exp += "<td>"+e.transportMethod+"</td>"
+        exp += "<td>"+e.exporterNumber+"</td>"
+        exp += "<td>"+e.name+"</td>"
+        exp += "<td>"+e.status+"</td>"
+        exp += "<td>"+e.importerName+"</td>"
+        exp += "<td>"+e.importerStatus+"</td>"
+        exp += "<td>"+e.importerAddress+"</td>"
+        exp += "<td>"+e.importerCountry+"</td>"
+        exp += "<td>"+e.productFamily+"</td>"
+        exp += "<td>"+e.productDescription+"</td>"
+        exp += "<td>"+e.unitsNumber+"</td>"
+        exp += "<td>"+e.weight+"</td>"
+        exp += "<td>"+e.surface+"</td>"
+       exp += "<td>"+e.value+"</td></tr>"
+    })
+    document.getElementById("exportt").innerHTML += exp
+  })
+
+
+
+
+    </script>
+</body>
+</html>

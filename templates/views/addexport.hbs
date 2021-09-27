@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+    <link rel="stylesheet" href="/styles/style.css">
+    {{!-- <script src="/scripts/script.js"></script> --}}
+    <title>{{title}}</title>
+</head>
+<body>
+    {{>sidebar}}
+
+
+    <form method="POST" action="/exports">
+            <label>Mode de Transport</label>
+            <input type="text" name="Mode de Transport">
+            <label>Num Controleur</label>
+            <input type="text" name="Num Controleur">
+            <label>Num C.I.</label>
+            <input type="text" name="Num C.I.">
+            <label>Point de Sortie</label>
+            <input type="text" name="Point de Sortie">
+            <label>Mode de Transport</label>
+            <input type="text" name="Mode de Transport">
+            <label>Num D'Exportateur</label>
+            <input type="text" name="Num D'Exportateur">
+            <label>Nom D'Exportateur</label>
+            <input type="text" name="Nom D'Exportateur">
+            <label>Ville d'origine</label>
+            <input type="text" name="Ville d'origine">
+            <label>Nom Importateur</label>
+            <input type="text" name="Nom Importateur">
+            <label>Statut</label>
+            <input type="text" name="Statut">
+            <label>Adresse Importateur</label>
+            <input type="text" name="Adresse Importateur">
+            <label>Pays Import</label>
+            <input type="text" name="Pays Import">
+            <label>Famille de produit</label>
+            <input type="text" name="Famille de produit">
+            <label>Description</label>
+            <input type="text" name="Description">
+            <label>Nbre d'Unite</label>
+            <input type="text" name="Nbre d'Unite">
+            <label>Poids</label>
+            <input type="text" name="Poids">
+            <label>Superficie</label>
+            <input type="text" name="Superficie">
+            <label>Valeurs</label>
+            <input type="text" name="Valeurs">
+
+            <button type="submit">Submit</button>
+    </form>
+
+
+</body>
+</html>

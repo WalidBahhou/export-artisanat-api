@@ -22,17 +22,17 @@ router.post('/exports', auth, async (req, res) => {
 
 router.get('/exports', auth, async (req, res) => {
     try {
-        const exports = await Export.find({})
-       
+        let exports = await Export.find({})
+        
         for (let index = 0; index < exports.length; index++) {
             await exports[index].populate(['directorate', 'exporterInfo']).execPopulate()
           }
           
-        // res.send(exports)
-        res.render('exports', {
-            title: 'Exports',
-            exports
-        })
+        res.send(exports)
+        // res.render('exports', {
+        //     title: 'Exports',
+        //     exports: exports[0]
+        // })
 
     } catch (e) {
         res.status(400).send(e)

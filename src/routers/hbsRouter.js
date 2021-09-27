@@ -15,5 +15,16 @@ router.get('/home', auth,(req, res) => {
     })
 })
 
+router.get('/opexports', auth, (req, res) => {
+    res.render('opexports', {
+        title: 'Exports'
+    })
+})
+
+router.get('/addexport', auth, (req, res) => {
+    res.render('addexport', {
+        title: 'Exports'
+    })
+})
 
 module.exports = router
